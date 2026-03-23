@@ -35,10 +35,7 @@ if not os.path.isfile(SANDBOX_PYPROJECT):
     with open(SANDBOX_PYPROJECT, "w") as f:
         f.write(_PYPROJECT_TEMPLATE)
 
-if not os.path.isdir(SANDBOX_VENV):
-    print("Creating sandbox Python environment...")
-    subprocess.run(["uv", "venv", SANDBOX_VENV], check=True)
-else:
-    print("Sandbox Python environment already exists, skipping creation.")
+print("Syncing sandbox Python environment...")
+subprocess.run(["uv", "sync"], check=True, cwd=SANDBOX_DIR)
 
 download_scientific_skills(target_dir="sandbox/.gemini/skills")
