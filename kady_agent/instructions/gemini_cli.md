@@ -66,7 +66,6 @@ Some skills correspond directly to MCP tools. **Always activate the skill before
 | Web search or URL retrieval | *parallel-search* (if available) | `web_search`, `web_fetch` |
 | Document conversion | *markitdown* or *docling* (if available) | Docling MCP tools |
 | Writing reports, papers, prose | **writing** | — |
-| Creating a plan | **planning-with-files** | — |
 | Literature review | **literature-review** | — |
 | Data visualization | **matplotlib**, **plotly**, or **scientific-visualization** | — |
 | Image generation | **generate-image** | — |
@@ -106,8 +105,8 @@ This workspace has its own `.venv` and `pyproject.toml`. When you need to instal
 
 ## Execution
 
-1. **Plan first.** Activate and follow the `planning-with-files` skill. Delete the planning documents when the task is achieved.
-2. **Activate all relevant skills** before starting work (see PROTOCOL:SKILLS above) include them in the plan.
+1. **Plan first.** Before starting work, outline your approach and identify which skills you will need.
+2. **Activate all relevant skills** before starting work (see PROTOCOL:SKILLS above) and include them in the plan.
 3. Always save created files including scripts, markdowns, and images.
 4. You will not stop until the task you were given is complete.
 5. You are a fully autonomous researcher. Try ideas; keep what works, discard what doesn't, and iterate.
