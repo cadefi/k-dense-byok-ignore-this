@@ -31,6 +31,7 @@ import { ModelSelector, DEFAULT_MODEL, type Model } from "@/components/model-sel
 import { SkillsSelector, buildSkillsContext, type Skill } from "@/components/skills-selector";
 import { ProvenancePanel } from "@/components/provenance-panel";
 import { WorkflowsPanel } from "@/components/workflows-panel";
+import { APP_VERSION, useUpdateCheck } from "@/lib/version";
 import { useAgent, type ActivityItem } from "@/lib/use-agent";
 import { useConfig } from "@/lib/use-config";
 import { useSkills } from "@/lib/use-skills";
@@ -559,6 +560,7 @@ export default function ChatPage() {
   const isStreaming = status === "streaming" || status === "submitted";
   const sandbox = useSandbox(isStreaming);
   const config = useConfig();
+  const { updateAvailable } = useUpdateCheck();
   const { skills: allSkills } = useSkills();
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState(true);
@@ -711,17 +713,30 @@ export default function ChatPage() {
     <div className="flex h-dvh flex-col">
       {/* Header */}
       <header className="relative flex items-center justify-between border-b px-6 py-3">
-        <a href="https://www.k-dense.ai" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-          <Image
-            src="/brand/kdense-logo.png"
-            alt="K-Dense BYOK"
-            width={120}
-            height={28}
-            className="h-7 w-auto object-contain"
-            priority
-          />
-          <span className="text-sm font-semibold tracking-tight text-foreground/80">BYOK</span>
-        </a>
+        <div className="flex items-center gap-2">
+          <a href="https://www.k-dense.ai" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+            <Image
+              src="/brand/kdense-logo.png"
+              alt="K-Dense BYOK"
+              width={120}
+              height={28}
+              className="h-7 w-auto object-contain"
+              priority
+            />
+            <span className="text-sm font-semibold tracking-tight text-foreground/80">BYOK</span>
+          </a>
+          <span className="text-[11px] text-muted-foreground/60">v{APP_VERSION}</span>
+          {updateAvailable && (
+            <a
+              href="https://github.com/K-Dense-AI/k-dense-byok"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] font-medium text-blue-500 hover:text-blue-400 transition-colors"
+            >
+              Update available
+            </a>
+          )}
+        </div>
         <p className="absolute left-1/2 -translate-x-1/2 text-[11px] text-muted-foreground/60 tracking-wide select-none">
           Brought to you by K-Dense, Inc.
         </p>
