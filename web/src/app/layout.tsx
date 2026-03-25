@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kady",
+  title: "K-Dense BYOK",
   description: "Multi-agent research assistant",
 };
 
