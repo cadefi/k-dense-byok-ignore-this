@@ -4,7 +4,7 @@
 
 K-Dense BYOK (Bring Your Own Keys) is an open-source app that lets you chat with an AI assistant called **Kady**. You ask Kady a question or give it a task, and it figures out the best way to handle it — sometimes answering directly, sometimes spinning up specialized AI "experts" that work behind the scenes to get you a thorough result.
 
-It's built for scientists, analysts, and curious people who want a powerful AI workspace without being locked into a single provider. K-Dense BYOK is powered by our very popular Claude Scientific Skills.
+It's built for scientists, analysts, and curious people who want a powerful AI workspace without being locked into a single provider. K-Dense BYOK is powered by our very popular Scientific Agent Skills.
 
 [![Watch the video](https://img.youtube.com/vi/BVG50mgw6-4/maxresdefault.jpg)](https://youtu.be/BVG50mgw6-4?si=pbEUdpuQJJfGiKjw)
 
@@ -149,7 +149,7 @@ Set `requiresFiles` to `true` when the workflow needs user-uploaded data (datase
 2. Add your workflow object anywhere in the array (it will be grouped by `category` automatically).
 3. Pick a `category` from the existing 22 disciplines (`paper`, `visual`, `data`, `literature`, `grants`, `scicomm`, `genomics`, `proteomics`, `cellbio`, `chemistry`, `drugdiscovery`, `physics`, `materials`, `clinical`, `neuro`, `ecology`, `finance`, `social`, `math`, `ml`, `engineering`, `astro`) or propose a new one.
 4. Choose an `icon` name from [Lucide Icons](https://lucide.dev/icons/) (PascalCase, no "Icon" suffix — e.g. `FlaskConical`, `Brain`, `Dna`). If the icon isn't already imported in `workflows-panel.tsx`, add it there too.
-5. List `suggestedSkills` from the [K-Dense scientific skills](https://github.com/K-Dense-AI/claude-scientific-skills) — these are passed to the agent so it knows which tools to load. Only use skill IDs that exist in the repo.
+5. List `suggestedSkills` from the [K-Dense scientific skills](https://github.com/K-Dense-AI/scientific-agent-skills) — these are passed to the agent so it knows which tools to load. Only use skill IDs that exist in the repo.
 6. Use `{placeholder}` syntax in the prompt for any variable the user should fill in, and add a matching entry in `placeholders`.
 
 ### Tips for high-quality workflows

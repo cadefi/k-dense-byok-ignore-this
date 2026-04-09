@@ -15,7 +15,7 @@ def load_instructions(agent_name: str) -> str:
 
 def download_scientific_skills(
     target_dir: str = "sandbox/.gemini/skills",
-    github_repo: str = "K-Dense-AI/claude-scientific-skills",
+    github_repo: str = "K-Dense-AI/scientific-agent-skills",
     source_path: str = "scientific-skills",
     branch: str = "main"
 ) -> None:
@@ -39,7 +39,7 @@ def download_scientific_skills(
         
         try:
             # Clone the repository with depth 1 for faster download
-            print("Cloning Claude Scientific Skills repository (this may take a moment)...")
+            print("Cloning Scientific Agent Skills repository (this may take a moment)...")
             subprocess.run(
                 ["git", "clone", "--depth", "1", "--branch", branch, repo_url, str(temp_path)],
                 check=True,
