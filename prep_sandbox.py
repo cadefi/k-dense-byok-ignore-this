@@ -28,7 +28,7 @@ dependencies = [
     "pyopenms>=3.5.0",
     "scipy>=1.17.1",
     "transformers>=4.57.6",
-    "parallel-web>=0.4.2",
+    "parallel-web-tools[cli]>=0.2.0",
 ]
 """
 
