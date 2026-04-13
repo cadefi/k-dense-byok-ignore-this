@@ -349,6 +349,24 @@ function ReadOnlyCodeView({
   );
 }
 
+function resolveMarkdownImageUrls(content: string, filePath: string): string {
+  const dir = filePath.substring(0, filePath.lastIndexOf("/") + 1) || "";
+  const isAbsolute = (u: string) =>
+    /^https?:\/\//.test(u) || u.startsWith("data:") || u.startsWith("blob:");
+  const resolve = (u: string) =>
+    rawFileUrl(u.startsWith("/") ? u : dir + u);
+
+  let out = content.replace(
+    /!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g,
+    (m, alt, url) => (isAbsolute(url) ? m : `![${alt}](${resolve(url)})`),
+  );
+  out = out.replace(
+    /(<img\s[^>]*?)src=(["'])([^"']+)\2/gi,
+    (m, before, q, url) => (isAbsolute(url) ? m : `${before}src=${q}${resolve(url)}${q}`),
+  );
+  return out;
+}
+
 function FileViewer({
   path, name, content, loading,
 }: {
@@ -377,7 +395,7 @@ function FileViewer({
   if (cat === "markdown") {
     return (
       <div className="h-full overflow-auto p-6 text-sm [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
-        <MessageResponse>{content}</MessageResponse>
+        <MessageResponse>{resolveMarkdownImageUrls(content, path)}</MessageResponse>
       </div>
     );
   }
