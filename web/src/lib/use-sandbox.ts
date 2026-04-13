@@ -106,6 +106,7 @@ export function useSandbox(isActive = false) {
 
     const newTab: Tab = { path, content: null, loading: true };
     setTabs((prev) => {
+      if (prev.some((t) => t.path === path)) return prev;
       const next = [...prev, newTab];
       tabsRef.current = next;
       return next;

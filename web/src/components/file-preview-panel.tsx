@@ -157,7 +157,16 @@ function TabBar({
     activeEl?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
   }, [activeTabPath]);
 
-  if (tabs.length === 0) return null;
+  const uniqueTabs = useMemo(() => {
+    const seen = new Set<string>();
+    return tabs.filter((t) => {
+      if (seen.has(t.path)) return false;
+      seen.add(t.path);
+      return true;
+    });
+  }, [tabs]);
+
+  if (uniqueTabs.length === 0) return null;
 
   return (
     <div
@@ -165,7 +174,7 @@ function TabBar({
       className="flex overflow-x-auto border-b bg-muted/20 shrink-0"
       style={{ scrollbarWidth: "none" }}
     >
-      {tabs.map((tab) => {
+      {uniqueTabs.map((tab) => {
         const name = tab.path.split("/").pop() ?? tab.path;
         const isActive = tab.path === activeTabPath;
         const mode = tabModes[tab.path] ?? "view";
