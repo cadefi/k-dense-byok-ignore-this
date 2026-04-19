@@ -17,6 +17,14 @@ from .utils import (
 load_dotenv()
 
 DEFAULT_MODEL = os.getenv("DEFAULT_AGENT_MODEL")
+# Separate default for the Gemini CLI expert subprocess. The expert is a
+# tool-heavy CLI agent, so we recommend Gemini 3.1 Pro (native tool calling +
+# 1M-token context) rather than the orchestrator's Claude Opus default. Users
+# can still override via DEFAULT_EXPERT_MODEL or per-turn from the UI.
+DEFAULT_EXPERT_MODEL = (
+    os.getenv("DEFAULT_EXPERT_MODEL")
+    or "openrouter/google/gemini-3.1-pro-preview"
+)
 EXTRA_HEADERS = {"X-Title": "Kady", "HTTP-Referer": "https://www.k-dense.ai"}
 PARALLEL_API_KEY = os.getenv("PARALLEL_API_KEY")
 
@@ -57,6 +65,11 @@ async def _open_turn_manifest(callback_context):
         state = callback_context.state
 
         model = state.get("_model") or DEFAULT_MODEL
+        expert_model = (
+            state.get("_expertModel")
+            or state.get("_model")
+            or DEFAULT_EXPERT_MODEL
+        )
         skills = state.get("_skills") or []
         databases = state.get("_databases") or []
         compute = state.get("_compute")
@@ -67,6 +80,7 @@ async def _open_turn_manifest(callback_context):
             user_text=user_text,
             attachments=attachments,
             model=model,
+            expert_model=expert_model,
             skills=skills,
             databases=databases,
             compute=compute,

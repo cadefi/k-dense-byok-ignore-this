@@ -271,7 +271,7 @@ function TreeNodes({
                     tabIndex={0}
                     onClick={(e) => { e.stopPropagation(); onStartCreateDir(node.path); }}
                     onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.stopPropagation(); onStartCreateDir(node.path); } }}
-                    className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover/folder:opacity-100 cursor-pointer"
+                    className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-foreground focus-visible:opacity-100 group-hover/folder:opacity-100 cursor-pointer"
                     title="New folder inside"
                   >
                     <FolderPlusIcon className="size-3" />
@@ -281,7 +281,7 @@ function TreeNodes({
                     tabIndex={0}
                     onClick={(e) => { e.stopPropagation(); onStartRename(node.path); }}
                     onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.stopPropagation(); onStartRename(node.path); } }}
-                    className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover/folder:opacity-100 cursor-pointer"
+                    className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-foreground focus-visible:opacity-100 group-hover/folder:opacity-100 cursor-pointer"
                     title={`Rename ${node.name}`}
                   >
                     <PencilIcon className="size-3" />
@@ -291,7 +291,7 @@ function TreeNodes({
                     tabIndex={0}
                     onClick={(e) => { e.stopPropagation(); onDownloadDir(node.path); }}
                     onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.stopPropagation(); onDownloadDir(node.path); } }}
-                    className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover/folder:opacity-100 cursor-pointer"
+                    className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-foreground focus-visible:opacity-100 group-hover/folder:opacity-100 cursor-pointer"
                     title={`Download ${node.name} as zip`}
                   >
                     <DownloadIcon className="size-3" />
@@ -301,7 +301,7 @@ function TreeNodes({
                     tabIndex={0}
                     onClick={(e) => { e.stopPropagation(); onDeleteDir(node.path); }}
                     onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.stopPropagation(); onDeleteDir(node.path); } }}
-                    className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover/folder:opacity-100 cursor-pointer"
+                    className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-destructive focus-visible:opacity-100 group-hover/folder:opacity-100 cursor-pointer"
                     title={`Delete ${node.name}`}
                   >
                     <Trash2Icon className="size-3" />
@@ -377,21 +377,21 @@ function TreeNodes({
               <FileTreeActions>
                 <button
                   onClick={() => onStartRename(node.path)}
-                  className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover/file:opacity-100"
+                  className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-foreground focus-visible:opacity-100 group-hover/file:opacity-100"
                   title={`Rename ${node.name}`}
                 >
                   <PencilIcon className="size-3" />
                 </button>
                 <button
                   onClick={() => onDownload(node.path)}
-                  className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover/file:opacity-100"
+                  className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-foreground focus-visible:opacity-100 group-hover/file:opacity-100"
                   title={`Download ${node.name}`}
                 >
                   <DownloadIcon className="size-3" />
                 </button>
                 <button
                   onClick={() => onDelete(node.path)}
-                  className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover/file:opacity-100"
+                  className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:text-destructive focus-visible:opacity-100 group-hover/file:opacity-100"
                   title={`Delete ${node.name}`}
                 >
                   <Trash2Icon className="size-3" />

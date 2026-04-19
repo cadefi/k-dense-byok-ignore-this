@@ -27,7 +27,7 @@ import { FileTreePanel } from "@/components/sandbox-panel";
 import { FilePreviewPanel } from "@/components/file-preview-panel";
 import { DatabaseSelector, buildDatabaseContext, type Database } from "@/components/database-selector";
 import { ComputeSelector, buildComputeContext, type ModalInstance } from "@/components/compute-selector";
-import { ModelSelector, DEFAULT_MODEL, type Model } from "@/components/model-selector";
+import { PairedModelSelector, DEFAULT_MODEL, DEFAULT_EXPERT_MODEL, type Model } from "@/components/model-selector";
 import { SkillsSelector, buildSkillsContext, type Skill } from "@/components/skills-selector";
 import { ProvenancePanel } from "@/components/provenance-panel";
 import { SettingsDialog } from "@/components/settings-dialog";
@@ -84,6 +84,7 @@ interface QueuedMessage {
   rawText: string;
   text: string;
   model: { id: string; label: string };
+  expertModel: { id: string; label: string };
   databases: Database[];
   compute: ModalInstance | null;
   skills: Skill[];
@@ -425,6 +426,12 @@ function MessageQueueDisplay({
                 <div className="mt-0.5 flex flex-wrap gap-1">
                   <span className="inline-flex items-center gap-0.5 rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
                     {item.model.label}
+                    {item.expertModel.id !== item.model.id && (
+                      <>
+                        <span className="mx-0.5 text-muted-foreground/50">·</span>
+                        {item.expertModel.label}
+                      </>
+                    )}
                   </span>
                   {item.files.length > 0 && (
                     <span className="inline-flex items-center gap-0.5 rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
@@ -488,6 +495,8 @@ function ChatInput({
   onComputeChange,
   selectedModel,
   onModelChange,
+  selectedExpertModel,
+  onExpertModelChange,
   onUploadFiles,
   modalConfigured,
   allSkills,
@@ -511,6 +520,8 @@ function ChatInput({
   onComputeChange: (instance: ModalInstance | null) => void;
   selectedModel: Model;
   onModelChange: (model: Model) => void;
+  selectedExpertModel: Model;
+  onExpertModelChange: (model: Model) => void;
   onUploadFiles: (files: FileList | File[], paths?: string[]) => Promise<string[]>;
   modalConfigured: boolean;
   allSkills: Skill[];
@@ -712,7 +723,12 @@ function ChatInput({
           />
           <PromptInputFooter>
             <div className="flex min-w-0 flex-wrap items-center gap-1.5">
-              <ModelSelector selected={selectedModel} onChange={onModelChange} />
+              <PairedModelSelector
+                orchestrator={selectedModel}
+                expert={selectedExpertModel}
+                onChangeOrchestrator={onModelChange}
+                onChangeExpert={onExpertModelChange}
+              />
               <DatabaseSelector selected={selectedDbs} onChange={onDbsChange} />
               <ComputeSelector selected={selectedCompute} onChange={onComputeChange} modalConfigured={modalConfigured} />
               <SkillsSelector skills={allSkills} selected={selectedSkills} onChange={onSkillsChange} />
@@ -846,8 +862,12 @@ export default function ChatPage() {
     }
   }, [status, messages.length, sandbox]);
 
-  // Selected LLM model
+  // Selected LLM models: one for the orchestrator (ADK agent) and one for
+  // the expert subprocess (Gemini CLI / delegate_task). Each role has its
+  // own recommended default — Claude Opus for planning/orchestration and
+  // Gemini 3.1 Pro for the tool-heavy CLI expert.
   const [selectedModel, setSelectedModel] = useState<Model>(DEFAULT_MODEL);
+  const [selectedExpertModel, setSelectedExpertModel] = useState<Model>(DEFAULT_EXPERT_MODEL);
 
   const handleCopy = useCallback((id: string, content: string) => {
     navigator.clipboard.writeText(content);
@@ -895,6 +915,9 @@ export default function ChatPage() {
   const handleWorkflowLaunch = useCallback(
     async (prompt: string, model: Model, compute: ModalInstance | null, suggestedSkills: string[], uploadedFiles: string[]) => {
       setSelectedModel(model);
+      // Workflows only expose a single model picker today; mirror the
+      // chosen model to the expert slot so the whole pipeline runs on it.
+      setSelectedExpertModel(model);
       setSelectedCompute(compute);
       setActiveTab("chat");
       const fileRefs = uploadedFiles.length > 0 ? "\n" + uploadedFiles.join("\n") : "";
@@ -904,6 +927,7 @@ export default function ChatPage() {
         : "";
       const fullPrompt = prompt + fileRefs + computeCtx + skillsCtx;
       const msgId = await send(fullPrompt, model.id, {
+        expertModel: model.id,
         attachments: uploadedFiles,
         skills: suggestedSkills,
         databases: [],
@@ -912,6 +936,7 @@ export default function ChatPage() {
       if (msgId) {
         turnMetaRef.current.set(msgId, {
           model: model.label,
+          expertModel: model.label,
           databases: [],
           compute: compute?.label ?? null,
           skills: suggestedSkills,
@@ -935,6 +960,7 @@ export default function ChatPage() {
             rawText,
             text,
             model: { id: selectedModel.id, label: selectedModel.label },
+            expertModel: { id: selectedExpertModel.id, label: selectedExpertModel.label },
             databases: [...selectedDbs],
             compute: selectedCompute,
             skills: [...selectedSkills],
@@ -945,6 +971,7 @@ export default function ChatPage() {
         return;
       }
       const msgId = await send(text, selectedModel.id, {
+        expertModel: selectedExpertModel.id,
         attachments: attachedFiles,
         skills: selectedSkills.map((s) => s.name),
         databases: selectedDbs.map((db) => db.name),
@@ -953,6 +980,7 @@ export default function ChatPage() {
       if (msgId) {
         turnMetaRef.current.set(msgId, {
           model: selectedModel.label,
+          expertModel: selectedExpertModel.label,
           databases: selectedDbs.map((db) => db.name),
           compute: selectedCompute?.label ?? null,
           skills: selectedSkills.map((s) => s.name),
@@ -961,7 +989,7 @@ export default function ChatPage() {
         });
       }
     },
-    [send, selectedModel, selectedDbs, selectedCompute, selectedSkills, attachedFiles, isStreaming, messageQueue.length]
+    [send, selectedModel, selectedExpertModel, selectedDbs, selectedCompute, selectedSkills, attachedFiles, isStreaming, messageQueue.length]
   );
 
   // Auto-send the next queued message when the agent becomes ready
@@ -970,6 +998,7 @@ export default function ChatPage() {
     const [next, ...rest] = messageQueue;
     setMessageQueue(rest);
     send(next.text, next.model.id, {
+      expertModel: next.expertModel.id,
       attachments: next.files,
       skills: next.skills.map((s) => s.name),
       databases: next.databases.map((db) => db.name),
@@ -978,6 +1007,7 @@ export default function ChatPage() {
       if (msgId) {
         turnMetaRef.current.set(msgId, {
           model: next.model.label,
+          expertModel: next.expertModel.label,
           databases: next.databases.map((db) => db.name),
           compute: next.compute?.label ?? null,
           skills: next.skills.map((s) => s.name),
@@ -1304,6 +1334,8 @@ export default function ChatPage() {
                     onComputeChange={setSelectedCompute}
                     selectedModel={selectedModel}
                     onModelChange={setSelectedModel}
+                    selectedExpertModel={selectedExpertModel}
+                    onExpertModelChange={setSelectedExpertModel}
                     onUploadFiles={sandbox.uploadFiles}
                     modalConfigured={config.modalConfigured}
                     allSkills={allSkills}

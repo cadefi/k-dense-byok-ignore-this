@@ -249,6 +249,7 @@ export function useAgent() {
       text: string,
       model?: string,
       meta?: {
+        expertModel?: string;
         attachments?: string[];
         skills?: string[];
         databases?: string[];
@@ -284,6 +285,7 @@ export function useAgent() {
 
         const stateDelta: Record<string, unknown> = {};
         if (model) stateDelta._model = model;
+        if (meta?.expertModel) stateDelta._expertModel = meta.expertModel;
         if (meta?.attachments?.length) stateDelta._attachments = meta.attachments;
         if (meta?.skills?.length) stateDelta._skills = meta.skills;
         if (meta?.databases?.length) stateDelta._databases = meta.databases;

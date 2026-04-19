@@ -97,6 +97,9 @@ function TimelineNode({ event }: { event: ProvenanceEvent }) {
             {typeof event.meta.model === "string" && (
               <MetaPill label="Model" value={event.meta.model} />
             )}
+            {typeof event.meta.expertModel === "string" && (
+              <MetaPill label="Expert" value={event.meta.expertModel} />
+            )}
             {Array.isArray(event.meta.databases) &&
               event.meta.databases.map((db) => (
                 <MetaPill key={db} label="DB" value={db} />

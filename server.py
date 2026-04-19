@@ -176,8 +176,8 @@ def _ollama_entry(tag: dict) -> dict:
 
     Ollama's tag payload looks like::
 
-        {"name": "llama3.2:3b", "size": 2000000000,
-         "details": {"family": "llama", "parameter_size": "3B",
+        {"name": "qwen3.6:8b", "size": 5200000000,
+         "details": {"family": "qwen", "parameter_size": "8B",
                      "quantization_level": "Q4_K_M"}}
 
     We mirror the OpenRouter-derived entries in web/src/data/models.json so

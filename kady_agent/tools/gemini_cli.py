@@ -31,13 +31,17 @@ def _cli_can_route(model: str) -> bool:
     """Return True when the Gemini CLI + our LiteLLM proxy can handle *model*.
 
     The expert subprocess routes through the LiteLLM proxy at
-    ``GOOGLE_GEMINI_BASE_URL``. Only models configured there (or in the
-    ``ollama/*`` wildcard) resolve; anything else causes the CLI to hang
-    on a 404 from the proxy. When the orchestrator is on an OpenRouter
-    model like ``openrouter/anthropic/claude-opus-4.7``, we drop the
-    ``-m`` flag so the CLI falls back to its own default Gemini model.
+    ``GOOGLE_GEMINI_BASE_URL``. Only models configured there resolve:
+    the explicit ``gemini-*`` entries, the ``ollama/*`` wildcard, and
+    the ``openrouter/*`` wildcard. Anything else would cause the CLI to
+    hang on a 404 from the proxy, so we drop the ``-m`` flag and let the
+    CLI fall back to its built-in default Gemini model.
     """
-    return model.startswith("gemini-") or model.startswith("ollama/")
+    return (
+        model.startswith("gemini-")
+        or model.startswith("ollama/")
+        or model.startswith("openrouter/")
+    )
 
 
 def _parse_stream_json(raw: str) -> dict:
@@ -173,7 +177,10 @@ async def delegate_task(
     if state is not None:
         turn_id = state.get("_turnId")
         session_id = state.get("_sessionId")
-        raw_model = state.get("_model")
+        # Prefer the explicit expert model; fall back to the orchestrator
+        # model for backwards compat with older clients that only send
+        # `_model` and for programmatic callers.
+        raw_model = state.get("_expertModel") or state.get("_model")
         if isinstance(raw_model, str) and raw_model.strip():
             selected_model = raw_model.strip()
     if session_id and turn_id:

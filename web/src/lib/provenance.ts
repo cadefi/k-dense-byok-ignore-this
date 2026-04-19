@@ -3,6 +3,7 @@ import type { ChatMessage } from "@/lib/use-agent";
 
 export interface TurnMeta {
   model: string;
+  expertModel?: string;
   databases: string[];
   compute: string | null;
   skills: string[];
@@ -38,6 +39,9 @@ export function buildTimeline(
       const metaFields: Record<string, string | string[]> = {};
       if (meta) {
         if (meta.model) metaFields.model = meta.model;
+        if (meta.expertModel && meta.expertModel !== meta.model) {
+          metaFields.expertModel = meta.expertModel;
+        }
         if (meta.databases.length > 0) metaFields.databases = meta.databases;
         if (meta.compute) metaFields.compute = meta.compute;
         if (meta.skills.length > 0) metaFields.skills = meta.skills;
@@ -154,6 +158,7 @@ export interface RunManifest {
     kadyVersion: string;
     kadyCommitSha: string | null;
     model: string | null;
+    expertModel?: string | null;
     litellmConfigSha256: string | null;
     pythonVersion: string;
     nodeVersion: string | null;
@@ -228,6 +233,7 @@ export function exportMethodsSectionFromManifests(
   if (manifests.length === 0) return "";
 
   const models = new Set<string>();
+  const expertModels = new Set<string>();
   const databases = new Set<string>();
   const skills = new Set<string>();
   const computes = new Set<string>();
@@ -245,6 +251,9 @@ export function exportMethodsSectionFromManifests(
 
   for (const m of manifests) {
     if (m.env.model) models.add(m.env.model);
+    if (m.env.expertModel && m.env.expertModel !== m.env.model) {
+      expertModels.add(m.env.expertModel);
+    }
     for (const db of m.input.databases) databases.add(db);
     for (const s of m.input.skills) skills.add(s);
     for (const d of m.delegations) {
@@ -279,6 +288,12 @@ export function exportMethodsSectionFromManifests(
   if (models.size > 0) {
     parts.push(
       `Analysis was conducted using ${formatList([...models])} via the K-Dense BYOK platform (version ${formatList([...kadyVersions])}${commits.size > 0 ? `, git ${formatList([...commits].map((c) => c.slice(0, 7)))}` : ""}).`
+    );
+  }
+
+  if (expertModels.size > 0) {
+    parts.push(
+      `Delegated expert tasks were executed on ${formatList([...expertModels])}.`
     );
   }
 

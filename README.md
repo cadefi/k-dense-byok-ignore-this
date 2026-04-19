@@ -184,7 +184,7 @@ You can run Kady and the expert entirely against local models served by [Ollama]
    ```
 2. Pull one or more models:
    ```bash
-   ollama pull llama3.2
+   ollama pull qwen3.6
    ollama pull qwen2.5-coder:7b
    ```
 3. (Optional) If your Ollama server lives somewhere other than `http://localhost:11434`, set `OLLAMA_BASE_URL` in `kady_agent/.env`.
