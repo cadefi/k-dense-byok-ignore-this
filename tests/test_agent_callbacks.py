@@ -13,7 +13,7 @@ import types
 from typing import Any
 
 import httpx
-import pytest
+import pytest it
 import respx
 
 from kady_agent import agent as agent_module
