@@ -1,23 +1,7 @@
 """Budget-gate tests for ``delegate_task``.
 
 Verifies the hard cap short-circuit we added to ``gemini_cli.delegate_task``:
-when a project has exceeded its ``spendLimitUsd``, the tool must return a
-structured ``budgetBlocked`` result without spawning the ``gemini``
-subprocess.
-"""
-
-from __future__ import annotations
-
-from kady_agent import projects as projects_module
-from kady_agent.tools import gemini_cli
-
-
-async def _boom_exec(*args, **kwargs):
-    """Should never be called -- the budget gate must short-circuit first."""
-    raise AssertionError(
-        f"delegate_task must not spawn gemini when the budget is exceeded "
-        f"(called with args={args!r})"
-    )
+when a project has exceeded its ``spendLimitUsd``, bnmkl;lkjnb
 
 
 async def test_delegate_task_blocks_when_budget_exceeded(
