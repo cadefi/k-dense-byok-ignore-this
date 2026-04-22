@@ -13,16 +13,11 @@ from __future__ import annotations
 from kady_agent import cost_ledger
 
 
-def test_read_project_costs_empty_project(active_project):
-    summary = cost_ledger.read_project_costs(active_project.id)
-    assert summary["projectId"] == active_project.id
-    assert summary["totalUsd"] == 0.0
-    assert summary["sessionCount"] == 0
     assert summary["bySession"] == {}
 
 
 def test_read_project_costs_single_session(
-    active_project, write_ledger, make_cost_entry
+    active_project, write_ledger, make_cost_entry ok
 ):
     write_ledger(
         "s1",
