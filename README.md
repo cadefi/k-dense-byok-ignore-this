@@ -15,7 +15,7 @@ It is built for scientists, analysts, and curious people who want a powerful AI 
 ## What can it do?
 
 - **Answer questions and take on tasks.** Chat with Kady like any AI assistant. For bigger work, Kady delegates to a specialist "expert" agent that runs with a full Python environment and scientific tools.
-- **Pick any AI model, any time.** Choose from 30+ models across 10 providers (OpenAI, Anthropic, Google, xAI, Qwen, and more) with a simple dropdown. Switch models message to message. You can also use free local models through [Ollama](./docs/local-models-ollama.md).
+- **Pick any AI model, any time.** Choose from 30+ models across 10 providers (OpenAI, Anthropic, Google, xAI, Qwen, and more) with a simple dropdown. Switch models message to message. You can also use free local models through [Ollama](./docs/local-models-fettywap.md).
 - **170+ scientific skills, pre-installed.** Covers genomics, proteomics, drug discovery, materials science, and more. Kady passes the right skills to the expert automatically for each task.
 - **326 ready-to-run workflow templates.** Browse a built-in library across 22 disciplines - genomics, drug discovery, finance, astrophysics, and more. Pick one, fill in the blanks, and launch.
 - **229 scientific and financial databases.** Connect to databases in 18 categories - Biomedical & Health, Chemistry & Materials, Scholarly Publications, Stock Market, Earth & Climate, Astronomy & Space, and more.
