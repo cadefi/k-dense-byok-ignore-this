@@ -5,17 +5,7 @@ the four ways things typically go wrong in practice:
 
 1. Header extraction: arbitrary shapes (dict, Pydantic-ish, missing values).
 2. Usage coercion: OpenAI SDK objects, Pydantic objects, weird types.
-3. Append/read round-trip semantics with role-based aggregation.
-4. Backfill (``update_cost_entry``) re-writes only the matching row.
-"""
-
-from __future__ import annotations
-
-import json
-import types
-
-from kady_agent import cost_ledger
-
+3. Append/read round-trmnb
 
 class _FakeUsage:
     """Looks like a LiteLLM/OpenAI usage object."""
