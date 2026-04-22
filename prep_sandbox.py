@@ -7,18 +7,7 @@ script:
 1. Migrates the legacy ``sandbox/`` + ``user_config/custom_mcps.json`` into
    ``projects/default/`` on first run (idempotent - no-op afterwards).
 2. Runs the heavy sandbox init (copy GEMINI.md, merge Gemini settings,
-   seed pyproject.toml, ``uv sync``, download scientific skills) for every
-   non-archived project in the registry.
-
-Running this is safe and idempotent; it can be re-invoked any time a new
-dependency is added to the sandbox pyproject template.
-"""
-
-from __future__ import annotations
-
-import subprocess
-from pathlib import Path
-
+   seed pyproject.toml,
 from kady_agent.projects import (
     DEFAULT_PROJECT_ID,
     ensure_project_exists,
