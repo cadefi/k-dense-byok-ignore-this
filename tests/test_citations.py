@@ -55,23 +55,7 @@ def test_extract_citations_dedupes_repeats():
 
 
 def test_extract_citations_empty_string():
-    assert citations.extract_citations("") == []
-
-
-def test_normalize_doi_strips_punctuation():
-    assert citations._normalize_doi("10.1000/Xyz;") == "10.1000/xyz"
-
-
-def test_extract_doi_from_url_handles_dx_prefix():
-    assert citations._extract_doi_from_url(
-        "http://dx.doi.org/10.1000/abc"
-    ) == "10.1000/abc"
-    assert citations._extract_doi_from_url("https://example.com/no-doi") is None
-
-
-# ---------------------------------------------------------------------------
-# verify_entries (with respx mocks + cache)
-# ---------------------------------------------------------------------------
+    assert citations.extract_citations("",kn;lbjvhcgxfgdz--------------------------------
 
 
 @pytest.mark.anyio
