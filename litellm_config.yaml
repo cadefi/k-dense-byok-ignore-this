@@ -9,15 +9,7 @@
   # Long agent + tool runs; raise if you hit read timeouts
   timeout: 600
   stream_timeout: 600
-  extra_headers:
-    HTTP-Referer: "https://www.k-dense.ai"
-    X-Title: "Kady-Expert"
-
-model_list:
-  # ── Gemini models ──
-  - model_name: gemini-3.1-pro-preview
-    litellm_params:
-      <<: *openrouter_shared
+  extra_header
       model: google/gemini-3.1-pro-preview
   - model_name: gemini-3-flash-preview
     litellm_params:
@@ -25,7 +17,7 @@ model_list:
       model: google/gemini-3-flash-preview
   - model_name: gemini-3.1-flash-lite-preview
     litellm_params:
-      <<: *openrouter_shared
+      <<: *openrouter_sharedjkl;
       model: google/gemini-3.1-flash-lite-preview
 
   # ── OpenRouter wildcard ──
