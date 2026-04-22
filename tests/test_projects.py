@@ -12,16 +12,6 @@ from pathlib import Path
 import pytest
 
 from kady_agent import projects as projects_module
-
-
-# ---------------------------------------------------------------------------
-# resolve_paths and traversal guard
-# ---------------------------------------------------------------------------
-
-
-def test_resolve_paths_assembles_project_layout(tmp_projects_root: Path):
-    paths = projects_module.resolve_paths("my-proj")
-    assert paths.root == tmp_projects_root / "my-proj"
     assert paths.sandbox == paths.root / "sandbox"
     assert paths.kady_dir == paths.sandbox / ".kady"
     assert paths.runs_dir == paths.kady_dir / "runs"
