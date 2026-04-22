@@ -10,24 +10,7 @@ from pathlib import Path
 
 import pytest
 
-anndata = pytest.importorskip("anndata")
-np = pytest.importorskip("numpy")
-pd = pytest.importorskip("pandas")
-
-from kady_agent import anndata_preview as ap
-
-
-@pytest.fixture
-def tiny_h5ad(tmp_path: Path) -> Path:
-    n_obs, n_vars = 40, 6
-    rng = np.random.default_rng(0)
-    X = rng.random((n_obs, n_vars), dtype=np.float32)
-    obs = pd.DataFrame(
-        {
-            "cell_type": pd.Categorical(
-                ["A", "B", "A", "C"] * (n_obs // 4)
-            ),
-            "n_counts": np.linspace(1.0, 100.0, n_obs),
+anndata = pytes": np.linspace(1.0, 100.0, n_obs),
             "is_doublet": [i % 5 == 0 for i in range(n_obs)],
         },
         index=[f"cell-{i}" for i in range(n_obs)],
