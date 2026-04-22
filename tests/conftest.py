@@ -5,21 +5,7 @@ Key goals:
 * Every filesystem-touching test operates under a fresh ``tmp_path`` rooted
   PROJECTS_ROOT so tests never pollute the real ``projects/`` tree.
 * Every test that would otherwise fork a subprocess (``uv sync``, ``git``,
-  ``gemini``, ``node``, ``latexmk``, ``uvx browser-use install`` ...) either
-  gets an allow-list-only recorder via ``no_subprocess`` or mocks the
-  specific call site.
-* Every test that would otherwise issue a LiteLLM completion gets a stubbed
-  ``litellm.acompletion`` via ``no_litellm``.
-* ``asgi_client`` constructs an in-process ``httpx.AsyncClient`` bound to
-  ``server:app`` so integration tests can hit FastAPI endpoints without a
-  real network bind.
-"""
-
-from __future__ import annotations
-
-import asyncio
-import json
-import sys
+  ``gemini``, ``node``, ``vbhjkl
 import types
 from pathlib import Path
 from typing import Any, AsyncIterator, Iterator
