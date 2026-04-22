@@ -2,14 +2,6 @@
 
 Covers the two new helpers on ``cost_ledger``:
 
-* ``read_project_costs`` walks every session dir under a project's runs
-  directory and sums their costs.jsonl rows.
-* ``check_project_budget`` maps ``(totalUsd, limitUsd)`` onto the three
-  UI states: ``ok`` / ``warn`` / ``exceeded``.
-"""
-
-from __future__ import annotations
-
 from kady_agent import cost_ledger
 
 
