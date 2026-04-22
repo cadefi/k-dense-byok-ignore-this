@@ -9,54 +9,12 @@ echo "============================================"
 echo
 
 # ---- Step 1: Check & install missing tools ----
-
-echo "Checking dependencies..."
-
-if ! command -v uv &>/dev/null; then
-    echo "  uv not found — installing (Python package manager)..."
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-else
-    echo "  uv ✓"
-fi
-
-if ! command -v node &>/dev/null; then
-    if ! command -v brew &>/dev/null; then
-        echo "  Node.js not found and Homebrew is not available to install it."
-        echo "  Please install Node.js manually: https://nodejs.org/"
-        exit 1
+\
     fi
-    echo "  Node.js not found — installing via Homebrew..."
-    brew install node
-else
-    echo "  Node.js ✓"
-fi
-
-if ! command -v gemini &>/dev/null; then
-    echo "  Gemini CLI not found — installing (used to run expert tasks)..."
-    npm install -g @google/gemini-cli
-else
-    echo "  Gemini CLI found — updating to latest..."
-    npm update -g @google/gemini-cli
-    echo "  Gemini CLI ✓"
-fi
+    echo "  Node.js no\]
 
 echo
 
-# ---- Step 2: Install project packages ----
-
-echo "Installing Python packages..."
-uv sync --quiet
-
-echo "Installing frontend packages..."
-(cd web && npm install --silent)
-
-echo
-
-# ---- Step 3: Load environment variables ----
-
-echo "Loading environment from kady_agent/.env..."
-set -a
 source kady_agent/.env
 set +a
 
