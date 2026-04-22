@@ -11,22 +11,7 @@ __pycache__/
 
 # Node
 node_modules/
-.next/
-out/
-dist/
-build/
-
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-logs/
-
-# Environment
-.env
-.env.local
-.env.development.local
+.next/ent.local
 .env.test.local
 .env.production.local
 
